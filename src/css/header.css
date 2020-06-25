@@ -1,0 +1,45 @@
+.Header {
+  height: 50px;
+  background-color: #f3efee;
+  position: relative;
+  top: 0px;
+  overflow: hidden;
+  border-color: black;
+}
+
+li#li {
+  border: 1px ;
+  border-color: black;
+  padding: 16px;
+  width: 200px;
+  text-align: center;
+
+}
+
+li#li:hover {
+  background-color: orange;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+li#li--active {
+  border: 1px ;
+  border-color: black;
+  padding: 16px;
+  width: 200px;
+  text-align: center;
+  background-color: red;
+}
+
+
+
+ul#ul {
+  display: flex;
+  list-style: none;
+  position: absolute;
+  margin-top: 0;
+}
+
+#HeaderText {
+  font-size: 20px;
+}

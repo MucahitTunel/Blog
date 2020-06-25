@@ -1,0 +1,14 @@
+FROM node:latest
+
+MAINTAINER Mucahit Tunel <mucahit.tunel42@gmail.com>
+
+
+RUN ["apt-get", "update"]
+RUN ["npm","install"]
+
+COPY ./* /home/blog/
+
+WORKDIR /home/blog/
+EXPOSE 8080
+
+C
