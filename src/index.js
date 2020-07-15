@@ -1,13 +1,24 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-//import App from './App';
-import CreateBlog from './createBlog';
+import App from './App';
 import * as serviceWorker from './serviceWorker';
+import {createStore} from 'redux';
+import allReducers from './reducers';
+import {Provider} from 'react-redux';
+require('react-web-vector-icons/fonts');
+
+const mystore = createStore(
+  allReducers,
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+);
+
 
 ReactDOM.render(
   <React.StrictMode>
-    <CreateBlog />
+    <Provider store={mystore}>
+      <App />
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );

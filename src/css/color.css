@@ -1,0 +1,13 @@
+.Body {
+
+}
+
+.Color {
+  float: left;
+  width: 30px;
+  height: 30px;
+  margin-left: 4px;
+  margin-top: 4px;
+  border: 1px solid #000;
+  cursor: pointer;
+}

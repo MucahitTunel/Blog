@@ -1,7 +1,17 @@
 import React from 'react';
 import './App.css';
-import Header from './header';
-import Subjects from './subjects';
+import Header from './screens/header';
+import Subjects from './screens/subjects';
+import SubjectDetail from './screens/subjectDetail';
+import AdminCreateBlog from './screens/adminCreateBlog';
+import AboutUs from './screens/AboutUs';
+import Contact from './screens/Contact';
+
+import {connect} from 'react-redux';
+import {change} from "./actions";
+
+import {BrowserRouter as Router, Switch, Route, Link} from 'react-router-dom';
+
 
 class App extends React.Component{
 
@@ -11,7 +21,8 @@ class App extends React.Component{
     this.state = {
       data : [],
       username: "",
-      
+      activetab:2,
+      path: this.props.path,
     }
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -19,24 +30,9 @@ class App extends React.Component{
   }
 
   componentDidMount(){
-    this.fetching();
+    console.log(this.props.path);
   }
 
-  fetching = () => {
-    var url = 'http://192.168.1.104:8080/subjects/';
-
-    fetch(url).then((response) => response.json())
-    .then((response) => {
-      console.log("*************************");
-      console.log(response);
-      this.setState({
-        data:response,
-      })
-    })
-    .catch((error) => {
-      console.error(error);
-    });
-  }
 
   handleSubmit = (event) => {
     event.preventDefault();
@@ -49,47 +45,48 @@ class App extends React.Component{
   }
 
 
-
   render(){
 
+
+    console.log(this.state.path);
+
     return (
-      <div className="App">
-        <Header />
-        <Subjects />
 
-        <form onSubmit={this.handleSubmit}>
-          <label>Kullanıcı Adı: </label>
-          <input name="username" id="input" type="text"/>
-
-          <input type="submit" value="Submit" />
-          <input type="reset" value="Reset" />
-
-        </form>
+        <Router className="App">
 
 
+          <div className="divide">
 
-        {this.state.data.length === 0  ?
 
-          null
-          :
-          <div>
-
-              {this.state.data.map((v,k) => {
-                return(
-                  <div key={k}>
-                    <h1>{v.title}</h1>
-                    <h1>{v.content}</h1>
-                  </div>
-                );
-              })}
+            <div>
+              <Switch>
+                <Route path={"/"} exact component={Subjects} />
+                <Route path={"/Anasayfa"} component={Subjects} />
+                <Route path={"/subjects"} exact component={Subjects} />
+                <Route path={"/subjects/subjectDetail/:id"} component={SubjectDetail} />
+                <Route path={"/adminCreateBlog"} component={AdminCreateBlog} />
+                <Route path={"/Hakkımda"} component={AboutUs} />
+                <Route path={"/İletişim"} component={Contact} />
+              </Switch>
+            </div>
 
           </div>
-        }
 
-      </div>
+
+
+        </Router>
+
     );
   }
-
 }
 
-export default App;
+
+const mapStateToProps = state => ({ path: state.path })
+
+const mapDispatchToProps = () => {
+  return {
+    change,
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App)

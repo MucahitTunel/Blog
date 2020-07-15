@@ -1,9 +1,22 @@
 .Title {
   text-align: left;
   margin-left: 10%;
+  margin-top: 60px;
+  position: relative;
 }
 
 
-.Body {
-  position: relative;
+.subjectborder {
+  border: 1px solid #000;
+  border-width: thin;
+  margin-top: 10px;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 55%;
+  margin-left: 10%;
+}
+
+div#subjects:hover {
+  background-color: #e3e3e3;
+  cursor: pointer;
 }
