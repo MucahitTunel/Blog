@@ -1,6 +1,9 @@
 import React from 'react';
 import './../css/admincreateblog.css';
 import Color from "../utils/colors";
+import Textarea from "../utils/textarea";
+import Input from "../utils/input";
+import Image from "../utils/image";
 
 import Icon, { FontAwesome, Feather } from 'react-web-vector-icons';
 
@@ -14,6 +17,7 @@ class CreateBlog extends React.Component{
 
     this.key = 1;
     this.dizino=0;
+    this.ref = []
 
     this.state = {
       data : [],
@@ -28,11 +32,11 @@ class CreateBlog extends React.Component{
       yazi:[],
       resim:[],
       circle: false,
+
     }
 
     this.handleTitleChange = this.handleTitleChange.bind(this);
     this.click = this.click.bind(this);
-    this.imageChange = this.imageChange.bind(this);
 
   }
 
@@ -46,30 +50,7 @@ class CreateBlog extends React.Component{
     })
   }
 
-  imageChange = (e) =>{
-    var img = new Image();
-    //console.log(uzunluk);
 
-    img.onload = function() {
-            alert(this.width + " " + this.height);
-    };
-    img.onerror = function() {
-        alert( "not a valid file: " + file.type);
-    };
-
-    var file = URL.createObjectURL(e.target.files[0])
-
-    console.log(file);
-
-
-
-    var image = <div style={{marginTop:20}}><img id="uploadimage" src={file} alt="Girl in a jacket"  /></div>
-    var dizi = this.state.data;
-    dizi[dizi.length] = image;
-    this.setState({
-      data: dizi,
-    })
-  }
 
 
 
@@ -89,10 +70,12 @@ class CreateBlog extends React.Component{
 
   click = (e,v) => {
 
-    if(v === "yazı"){
-      var yazi = <textarea  onFocus={(e)=>this._onFocus(e)} onBlur={(e)=>this._onBlur(e)} className="multitext" id={this.key} style={{marginTop:20, width:'80%', color:'black', fontSize:12}} type="text"></textarea>
 
-      var uzunluk = this.state.yazi.length;
+    if(v === "yazı"){
+      //var yazi = <textarea  onFocus={(e)=>this._onFocus(e)} onBlur={(e)=>this._onBlur(e)} className="multitext" id={this.key} style={{marginTop:20, width:'80%', color:'black', fontSize:12}} type="text"></textarea>
+
+      this.ref[this.dizino] = React.createRef()
+      var yazi = <Textarea id={this.key} dizino={this.dizino} color="black" size={12} ref={this.ref[this.dizino]} focus={this._onFocus} />
 
       var veriler = {
         id: this.key,
@@ -114,13 +97,14 @@ class CreateBlog extends React.Component{
 
       })
     }else if (v === "alt başlık") {
-      var yazi = <input onFocus={(e)=>this._onFocus(e)} key={this.key} style={{marginTop:20, width:'80%', color:"#000000", fontSize:22, fontWeight:'bold'}} id={this.key} type="text" />
-      var veriler = {
+      this.ref[this.dizino] = React.createRef()
+      var yazi = <Input id={this.key} dizino={this.dizino} color="black" size={12} ref={this.ref[this.dizino]} focus={this._onFocus} />
+
+      veriler = {
         id: this.key,
         data : yazi,
         type: "alt başlık",
         no: this.dizino,
-
       }
 
       this.dizino++;
@@ -134,15 +118,17 @@ class CreateBlog extends React.Component{
       })
     }else {
 
-      var uzunluk = this.state.resim.length;
-
-      var image = <input key={this.key} id={this.key} style={{marginTop:20, width:'80%'}} type="file" name="image" accept="image/*" onChange={(e)=>this.imageChange(e)}/>
+      console.log("image");
+      this.ref[this.dizino] = React.createRef()
+      var image = <Image id={this.key} dizino={this.dizino} ref={this.ref[this.dizino]} path={this.imagePath} />
 
       var veriler = {
         id: this.key,
         data : image,
         type: "resim",
+        path: "",
         no:this.dizino,
+        file: null,
       }
 
       this.dizino++;
@@ -157,203 +143,225 @@ class CreateBlog extends React.Component{
     }
   }
 
-  _onFocus = (e) => {
+  imagePath = (no) => {
 
-    if(e.target.id === "titleinput"){
-      this.setState({
-        activeId: null,
-        ptions: false,
-        show: false,
-      })
-    }else {
-      var id = e.target.id;
-      id = parseInt(id)
+    var data = this.state.data;
+    data[no].path = this.ref[no].current.state.fileurl;
+    data[no].file = this.ref[no].current.state.selectedFile;
 
-      var type;
-      var no;
-
-      for (var i = 0; i < this.state.data.length; i++) {
-        if(this.state.data[i].id === id){
-          no = this.state.data[i].no;
-        }
-      }
-
-      type = this.state.data[no].type;
-
-      if(type === "yazı"){
-        this.setState({
-          options: true,
-          show: true,
-          activeId: e.target.id,
-        });
-      }else {
-        console.log(e.target.key);
-        this.setState({
-          options: true,
-          show: true,
-          activeId: e.target.id,
-        });
-      }
+    this.setState({
+      data: data,
+    })
+  }
 
 
-    }
+  _onFocus = (id) => {
+    this.setState({
+      activeId: id,
+      options:true,
+      show:true,
+    })
+
   }
 
   _onBlur = (e) => {
 
   }
 
-  Change = (e, id) => {
-    var newsize = parseInt(e.target.value);
-    var data = this.state.data;
-
-    console.log(data);
-
-    var newdata = [];
-
-
-    for (var i = 0; i < data.length; i++) {
-      if(data[i].id === id){
-
-        var color = data[i].color;
-
-        var yazi =  <textarea onFocus={(e)=>this._onFocus(e)} onBlur={(e)=>this._onBlur(e)} className="multitext" id={id} style={{marginTop:20, width:'80%', color:color, fontSize:newsize}} type="text"></textarea>
-
-        var veriler = {
-          id: id,
-          data : yazi,
-          type: "yazı",
-          color:data[i].color,
-          size:newsize,
-          no:data[i].no,
-
-        }
-
-        newdata[i] = veriler;
-      }else {
-        newdata[i] = data[i];
-      }
-    }
-    console.log(newdata);
-
-    this.setState({
-      data: newdata,
-    })
-  }
-
-
 
   colorChange = (newcolor) => {
 
-    var data = this.state.data;
+  var data = this.state.data;
 
-    var newdata = [];
-    var active = parseInt(this.state.activeId)
+  var newdata = [];
+  var active = parseInt(this.state.activeId)
 
-    for (var i = 0; i < data.length; i++) {
+  for (var i = 0; i < data.length; i++) {
 
+    if(data[i].id === active){
+      console.log("girdim");
+      var dizino = data[i].no;
 
-      if(data[i].id === active){
-        console.log("girdim");
-        var size = data[i].size;
+      this.ref[dizino].current.setState({
+        color: newcolor,
+      });
 
-        var yazi =  <textarea  onFocus={(e)=>this._onFocus(e)} onBlur={(e)=>this._onBlur(e)} className="multitext" id={active} style={{marginTop:20, width:'80%', color:newcolor, fontSize:size}} type="text"></textarea>
+      data[i].color = newcolor;
+      this.setState({
+        circle: !this.state.circle,
+      })
 
-        var veriler = {
-          id: active,
-          data : yazi,
-          type: "yazı",
-          color:newcolor,
-          size:data[i].size,
-          no:data[i].no,
-
-        }
-
-        newdata[i] = veriler;
-      }else {
-        newdata[i] = data[i];
-      }
+      break;
     }
-    console.log(newdata);
-
-    this.setState({
-      data: newdata,
-    })
   }
 
+}
 
-  /*
-    KUTU SİLME İŞLEMİ
-  */
+Change = (e) => {
+  var data = this.state.data;
+  var active = parseInt(this.state.activeId)
+  for (var i = 0; i < data.length; i++) {
+    if(data[i].id === active){
+      console.log("girdim");
+      var dizino = data[i].no;
 
-  remove = () => {
-    var removeid = parseInt(this.state.activeId);
-    var length = this.state.data.length;
+      this.ref[dizino].current.setState({
+        size: parseInt(e.target.value),
+      });
+
+      data[i].size = parseInt(e.target.value);
+      this.setState({
+        circle: !this.state.circle,
+      })
+      break;
+    }
+  }
+}
+
+remove = () => {
+  var removeid = parseInt(this.state.activeId);
+  var length = this.state.data.length;
+  var data = this.state.data;
+  var silkontrol=0;
+  var newdata=[];
+  var newdataid=0;
+
+  for(let i = 0; i < length; i++){
+    if(data[i].id === removeid){
+      silkontrol=1;
+      data[i].data = null;
+      newdata[newdataid] = data[i];
+      newdataid++;
+    }else {
+      if(silkontrol===0){
+        newdata[newdataid] = data[i];
+        newdataid++;
+      }else {
+
+        data[i].no=newdataid;
+        newdata[newdataid] = data[i];
+        newdataid++;
+
+      }
+    }
+  }//for
+
+  console.log(newdata);
+
+
+  this.setState({
+    data: newdata,
+  })
+}
+
+  imageset = (e, id) => {
+    e.preventDefault();
+    this._onFocus(id);
+  }
+
+  kaydet = (e) => {
+    e.preventDefault();
+
+
     var data = this.state.data;
-    var silkontrol=0;
-    var newdata=[];
-    var newdataid=0;
+    var length = data.length;
 
     for(let i = 0; i < length; i++){
-      if(data[i].id === removeid){
-        silkontrol=1;
-      }else {
-        if(silkontrol===0){
-          newdata[newdataid] = data[i];
-          newdataid++;
+      if(data[i].data !== null){
+        var formData = new FormData();
+
+        if(data[i].type === "yazı"){
+          var form = {
+            text: this.ref[data[i].no].current.state.text,
+            color: this.ref[data[i].no].current.state.color,
+            size: this.ref[data[i].no].current.state.size.toString(),
+            type: "yazi",
+          }
+
+          this.ekleFetch(form, "text");
+        }else if (data[i].type === "alt başlık") {
+          var form = {
+            text: this.ref[data[i].no].current.state.text,
+            type: "alt baslik",
+          }
+          this.ekleFetch(form, "alt baslik");
         }else {
-          var id = data[i].id;
-          if(data[i].type==="yazı"){
-            var color = data[i].color;
-            var size = data[i].size;
+          if(data[i].path !== ""){
+            console.log(data[i].file);
+            /*var form = {
+              file : data[i].file,
+              type : "file",
+            }*/
+            var form = new FormData();
+            form.append("file", data[i].file);
+            form.append("type", "file");
 
-            var yazi = <textarea  onFocus={(e)=>this._onFocus(e)} onBlur={(e)=>this._onBlur(e)} className="multitext" id={id} style={{marginTop:20, width:'80%', color:color, fontSize:size}} type="text"></textarea>
-
-            var veriler = {
-              id: id,
-              data : yazi,
-              type: "yazı",
-              color:data[i].color,
-              size:data[i].size,
-              no: newdataid,
-
-            }
-            newdata[newdataid] = veriler;
-            newdataid++;
-          }else if(data[i].type==="alt başlık") {
-
-            var yazi = <input onFocus={(e)=>this._onFocus(e)} key={id} style={{marginTop:20, width:'80%', color:"#000000", fontSize:22, fontWeight:'bold'}} id={id} type="text" />
-            var veriler = {
-              id: id,
-              data : yazi,
-              type: "alt başlık",
-              no:newdataid,
-
-            }
-            newdata[newdataid] = veriler;
-            newdataid++;
-
-          }else {
-            var image = <input key={id} id={id} style={{marginTop:20, width:'80%'}} type="file" name="image" accept="image/*" onChange={(e)=>this.imageChange(e)}/>
-
-            var veriler = {
-              id: id,
-              data : image,
-              type: "resim",
-              no:newdataid,
-            }
-            newdata[newdataid] = veriler;
-            newdataid++;
-          }//else
+            this.ekleFetch(form, "file");
+          }
         }
       }
     }//for
-
-    this.setState({
-      data: newdata,
-    })
   }
 
+
+  ekleFetch = async (formData, type) => {
+
+
+    var url = "http://192.168.1.105:8080/post/createPost/";
+    var url = "http://192.168.1.105:8080/post/createPostFile/";
+    var urlimage = ""
+
+    if(type === "text"){
+      fetch(url, {
+          method: 'POST',
+          headers:{'Content-Type':'application/json'},
+          body: JSON.stringify(formData),
+
+        }).then(response => response.json() )
+          .then((response) => {
+              console.log(response);
+        }).catch(error =>  alert(error));
+    }else if (type === "alt baslik") {
+        fetch(url, {
+            method: 'POST',
+            headers:{'Content-Type':'application/json'},
+            body: JSON.stringify(formData),
+
+          }).then(response => response.json() )
+            .then((response) => {
+                console.log(response);
+          }).catch(error =>  alert(error));
+    }else {
+      fetch(url, {
+          method: 'POST',
+          body: JSON.stringify(formData),
+          headers:{'Content-Type':'multipart/form-data; name:file '},
+
+        }).then(response => response.json() )
+          .then((response) => {
+              console.log(response);
+        }).catch(error =>  alert(error));
+    }
+
+
+    /*
+    if(type === "text"){
+      fetch(url, {
+          method: 'POST',
+          body: JSON.stringify(formData),
+          headers:{
+            'Accept':"application/json",
+            'Content-Type': 'multipart/form-data',
+          },
+        }).then(response => response.json() )
+          .then((response) => {
+              console.log(response);
+        }).catch(error =>  alert("Hata"));
+    }
+    */
+
+
+  }
 
 
   render(){
@@ -371,15 +379,34 @@ class CreateBlog extends React.Component{
 
               <div>
                 {this.state.data.map((v,k) => {
-                  if(v.type === "yazi"){
-                    return(
-                      <div key={k}>{v.data}</div>
-                    );
+
+                  if(v.data !== null){
+                    if(v.type === "yazi"){
+                      return(
+                        <div key={k}>{v.data}</div>
+                      );
+                    }else if(v.type==="resim"){
+                      if(v.path !== "" && v.data !== null){
+                        return (
+                          <div key={k}>
+                            <div>{v.data}</div>
+                            <div style={{marginTop:10}}><button onClick={(e)=>this.imageset(e, v.id)}><img style={{width:200, height:200}} src={v.path}/></button> </div>
+                          </div>
+                        );
+                      }else {
+                        return(
+                          <div key={k}>{v.data}</div>
+                        )
+                      }
+                    }else {
+                      return(
+                        <div key={k}>{v.data}</div>
+                      );
+                    }
                   }else {
-                    return(
-                      <div key={k}>{v.data}</div>
-                    );
+                    return null;
                   }
+
 
                 })}
               </div>
@@ -401,6 +428,11 @@ class CreateBlog extends React.Component{
 
               </ul>
             </div>
+
+            <div style={{marginTop:30}}>
+              <button onClick={this.kaydet} style={{width:100, height:50}}>Kaydet</button>
+            </div>
+
           </div>
         </div>
 
@@ -412,9 +444,8 @@ class CreateBlog extends React.Component{
 
               {this.state.data.map( (v,k) => {
 
-
                 if(v.id === parseInt(this.state.activeId)){
-
+                  console.log(v.type);
                   if(v.type === "yazı"){
                     return(
                       <div key={k}>
@@ -453,7 +484,7 @@ class CreateBlog extends React.Component{
 
                         <div style={{margin:10}}>
 
-                          <button value="remove" type="button" onClick={this.remove}>KALDIR</button>
+                          <button className="removeButton" value="remove" type="button" onClick={this.remove}>KALDIR</button>
 
                         </div>
 
@@ -461,8 +492,6 @@ class CreateBlog extends React.Component{
                       </div>
                     );
                   }else if (v.type === "alt başlık") {
-
-
                     return(
                       <div key={k}>
                         <div className="featureNameBorder">
@@ -480,7 +509,18 @@ class CreateBlog extends React.Component{
                   }
                   else {
                     return(
-                      null
+                      <div key={k}>
+                        <div className="featureNameBorder">
+                          <h2 style={{padding:10}}>Resim</h2>
+                        </div>
+
+                        <div style={{margin:10}}>
+
+                          <button value="remove" type="button" onClick={this.remove}>KALDIR</button>
+
+                        </div>
+
+                      </div>
                     );
                   }
                 }
