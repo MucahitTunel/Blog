@@ -14,7 +14,7 @@ class SubjectDetail extends React.Component {
   }
 
   componentDidMount(){
-    var url = 'http://192.168.1.105:8080/subjects/subjectDetail/';
+    var url = 'http://192.168.1.108:8080/subjects/subjectDetail/';
     fetch(url, {
       method:'POST',
       headers:{'Content-Type':'application/json'},

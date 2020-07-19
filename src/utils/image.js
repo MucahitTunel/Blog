@@ -40,7 +40,7 @@ class Image extends React.Component{
   render(){
     return (
         <div className="Body">
-          <input onFocus={this.focus} style={{marginTop:20, width:'80%'}} type="file" name="image" accept="image/*" onChange={(e)=>this.imageChange(e)}/>
+          <input onFocus={this.focus} name="image" style={{marginTop:20, width:'80%'}} type="file" name="image" accept="image/*" onChange={(e)=>this.imageChange(e)}/>
         </div>
     );
   }

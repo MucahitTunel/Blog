@@ -1,9 +1,9 @@
 import React from 'react';
-import './../css/admincreateblog.css';
-import Color from "../utils/colors";
-import Textarea from "../utils/textarea";
-import Input from "../utils/input";
-import Image from "../utils/image";
+import './../../css/admin/admincreateblog.css';
+import Color from "../../utils/colors";
+import Textarea from "../../utils/textarea";
+import Input from "../../utils/input";
+import Image from "../../utils/image";
 
 import Icon, { FontAwesome, Feather } from 'react-web-vector-icons';
 
@@ -18,6 +18,11 @@ class CreateBlog extends React.Component{
     this.key = 1;
     this.dizino=0;
     this.ref = []
+    this.fetchno = 0;
+
+    this.tempTitle = "";
+
+    this.subjectkontrol = false;
 
     this.state = {
       data : [],
@@ -32,6 +37,8 @@ class CreateBlog extends React.Component{
       yazi:[],
       resim:[],
       circle: false,
+      subjectid : null,
+      publish: false,
 
     }
 
@@ -259,16 +266,26 @@ remove = () => {
     this._onFocus(id);
   }
 
-  kaydet = (e) => {
-    e.preventDefault();
 
-
+  elements = () => {
+    var formdata = new FormData();
     var data = this.state.data;
     var length = data.length;
 
+
+    if(this.tempTitle !== this.state.title){
+      var form = {
+        title : this.state.title,
+        id: this.state.subjectid,
+        type: "title",
+        elementid : 0,
+      }
+      formdata.append('title', form)
+    }
+
+
     for(let i = 0; i < length; i++){
       if(data[i].data !== null){
-        var formData = new FormData();
 
         if(data[i].type === "yazı"){
           var form = {
@@ -276,72 +293,87 @@ remove = () => {
             color: this.ref[data[i].no].current.state.color,
             size: this.ref[data[i].no].current.state.size.toString(),
             type: "yazi",
+            id: this.state.subjectid,
+            elementid : data[i].id,
           }
+          formdata.append(i.toString(),form);
 
-          this.ekleFetch(form, "text");
         }else if (data[i].type === "alt başlık") {
           var form = {
             text: this.ref[data[i].no].current.state.text,
             type: "alt baslik",
+            id: this.state.subjectid,
+            elementid : data[i].id,
           }
-          this.ekleFetch(form, "alt baslik");
+          formdata.append(i.toString(),form);
         }else {
           if(data[i].path !== ""){
-            console.log(data[i].file);
-            /*var form = {
-              file : data[i].file,
-              type : "file",
-            }*/
+
             var form = new FormData();
             form.append("file", data[i].file);
             form.append("type", "file");
+            form.append("id", this.state.subjectid);
+            form.append("elementid", data[i].id);
 
             this.ekleFetch(form, "file");
           }
         }
       }
     }//for
+    this.ekleFetch(formdata)
+  }
+
+  kaydet = (e) => {
+    e.preventDefault();
+
+    var formdata = new FormData();
+    if(this.state.subjectid === null){
+      if(this.state.title !== ""){
+        this.tempTitle = this.state.title;
+        var form = {
+          title : this.state.title,
+          publish: "no",
+        }
+        formdata.append("newsubject", form)
+        this.ekleFetch(formdata);
+        this.elements();
+      }
+    }else {
+      this.subjectkontrol = true;
+      this.elements();
+    }
   }
 
 
-  ekleFetch = async (formData, type) => {
+  ekleFetch = async (formData) => {
 
+    console.log(formData);
 
-    var url = "http://192.168.1.105:8080/post/createPost/";
-    var url = "http://192.168.1.105:8080/post/createPostFile/";
-    var urlimage = ""
+    var url = "http://192.168.1.108:8080/post/createPost/";
+    var newurl = "http://192.168.1.108:8080/post/createPostFile/";
+    var newsubjecturl = "http://192.168.1.108:8080/post/createNewSubject/"
 
-    if(type === "text"){
-      fetch(url, {
+    fetch(url, {
+        method: 'POST',
+        header: {
+          'Content-Type' : 'multipart/form-data',
+        },
+        body: formData,
+
+      }).then(response => response.json() )
+        .then((response) => {
+            console.log(response);
+      }).catch(error =>  alert(error));
+
+      /*fetch(newurl, {
           method: 'POST',
-          headers:{'Content-Type':'application/json'},
-          body: JSON.stringify(formData),
+          body: formData,
 
         }).then(response => response.json() )
           .then((response) => {
               console.log(response);
-        }).catch(error =>  alert(error));
-    }else if (type === "alt baslik") {
-        fetch(url, {
-            method: 'POST',
-            headers:{'Content-Type':'application/json'},
-            body: JSON.stringify(formData),
+        }).catch(error =>  alert(error));*/
 
-          }).then(response => response.json() )
-            .then((response) => {
-                console.log(response);
-          }).catch(error =>  alert(error));
-    }else {
-      fetch(url, {
-          method: 'POST',
-          body: JSON.stringify(formData),
-          headers:{'Content-Type':'multipart/form-data; name:file '},
-
-        }).then(response => response.json() )
-          .then((response) => {
-              console.log(response);
-        }).catch(error =>  alert(error));
-    }
 
 
     /*
@@ -365,6 +397,15 @@ remove = () => {
 
 
   render(){
+
+    console.log(this.subjectkontrol);
+    console.log(this.state.data.length);
+
+    if(this.subjectkontrol === true && this.state.data.length > 0){
+      console.log("come on");
+      this.subjectkontrol = false;
+      this.elements();
+    }
 
     return (
       <div className="App">
@@ -445,7 +486,6 @@ remove = () => {
               {this.state.data.map( (v,k) => {
 
                 if(v.id === parseInt(this.state.activeId)){
-                  console.log(v.type);
                   if(v.type === "yazı"){
                     return(
                       <div key={k}>
