@@ -13,6 +13,7 @@ class Image extends React.Component{
       dizino : this.props.dizino,
       selectedFile: null,
       fileurl: "",
+      filename: "",
     }
   }
 
@@ -23,13 +24,19 @@ class Image extends React.Component{
 
   imageChange = (e) =>{
     e.preventDefault();
+    console.log(e.target.files[0]);
     var fileurl = URL.createObjectURL(e.target.files[0])
     var file = e.target.files[0];
+    var filename = e.target.files[0].name;
 
-    this.setState({
-      selectedFile: file,
-      fileurl: fileurl,
-    })
+    if(e.target.files[0].type === 'image/jpeg' || e.target.files[0].type === 'image/png'){
+      this.setState({
+        selectedFile: file,
+        fileurl: fileurl,
+        filename: filename,
+      });
+    }
+
   }
 
   focus = (e) => {

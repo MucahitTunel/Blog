@@ -23,6 +23,10 @@ class CreateBlog extends React.Component{
     this.tempTitle = "";
 
     this.subjectkontrol = false;
+    this.imagefetchkontrol = false;
+    this.imagedata = [];
+    this.removeids = [];
+
 
     this.state = {
       data : [],
@@ -77,6 +81,7 @@ class CreateBlog extends React.Component{
 
   click = (e,v) => {
 
+    this.subjectkontrol = false;
 
     if(v === "yazı"){
       //var yazi = <textarea  onFocus={(e)=>this._onFocus(e)} onBlur={(e)=>this._onBlur(e)} className="multitext" id={this.key} style={{marginTop:20, width:'80%', color:'black', fontSize:12}} type="text"></textarea>
@@ -136,6 +141,7 @@ class CreateBlog extends React.Component{
         path: "",
         no:this.dizino,
         file: null,
+        filename: "",
       }
 
       this.dizino++;
@@ -155,6 +161,9 @@ class CreateBlog extends React.Component{
     var data = this.state.data;
     data[no].path = this.ref[no].current.state.fileurl;
     data[no].file = this.ref[no].current.state.selectedFile;
+    data[no].filename = this.ref[no].current.state.filename;
+
+    console.log(data[no].filename);
 
     this.setState({
       data: data,
@@ -227,6 +236,7 @@ Change = (e) => {
 
 remove = () => {
   var removeid = parseInt(this.state.activeId);
+  this.removeids[this.removeids.length] = removeid;
   var length = this.state.data.length;
   var data = this.state.data;
   var silkontrol=0;
@@ -271,7 +281,12 @@ remove = () => {
     var formdata = new FormData();
     var data = this.state.data;
     var length = data.length;
+    var txtkontrol = 0;
+    this.imagedata = [];
 
+    console.log("title kontrol");
+    console.log(this.tempTitle);
+    console.log(this.state.title);
 
     if(this.tempTitle !== this.state.title){
       var form = {
@@ -280,12 +295,21 @@ remove = () => {
         type: "title",
         elementid : 0,
       }
-      formdata.append('title', form)
+      formdata.append('title', JSON.stringify(form));
     }
 
 
     for(let i = 0; i < length; i++){
       if(data[i].data !== null){
+
+        if(data[i].type === "resim"){
+          if(data[i].path !== ""){
+            console.log("resim varrrrrrrrrrr");
+            this.imagedata[this.imagedata.length] = data[i].no;
+            this.imagefetchkontrol = true;
+          }
+        }
+
 
         if(data[i].type === "yazı"){
           var form = {
@@ -296,7 +320,8 @@ remove = () => {
             id: this.state.subjectid,
             elementid : data[i].id,
           }
-          formdata.append(i.toString(),form);
+          txtkontrol = 1;
+          formdata.append(i.toString(),JSON.stringify(form));
 
         }else if (data[i].type === "alt başlık") {
           var form = {
@@ -305,26 +330,32 @@ remove = () => {
             id: this.state.subjectid,
             elementid : data[i].id,
           }
-          formdata.append(i.toString(),form);
+          txtkontrol = 1;
+          formdata.append(i.toString(),JSON.stringify(form));
         }else {
-          if(data[i].path !== ""){
-
-            var form = new FormData();
-            form.append("file", data[i].file);
-            form.append("type", "file");
-            form.append("id", this.state.subjectid);
-            form.append("elementid", data[i].id);
-
-            this.ekleFetch(form, "file");
-          }
         }
       }
     }//for
-    this.ekleFetch(formdata)
+
+    if(txtkontrol = 0){
+        if(this.imagefetchkontrol === true){
+          this.setState({
+            circle: !this.state.circle,
+          })
+        }
+    }else {
+      this.ekleFetch(formdata)
+    }
   }
+
 
   kaydet = (e) => {
     e.preventDefault();
+
+    if(this.removeids.length > 0){
+      this.removefetch();
+    }
+
 
     var formdata = new FormData();
     if(this.state.subjectid === null){
@@ -334,77 +365,127 @@ remove = () => {
           title : this.state.title,
           publish: "no",
         }
-        formdata.append("newsubject", form)
-        this.ekleFetch(formdata);
-        this.elements();
+        formdata.append("newsubject", JSON.stringify(form));
+        this.ekleFetch(formdata, "newsubject");
       }
     }else {
-      this.subjectkontrol = true;
+      //this.subjectkontrol = true;
       this.elements();
     }
   }
 
 
-  ekleFetch = async (formData) => {
+  ekleFetch = async (formData, type="text") => {
 
-    console.log(formData);
 
     var url = "http://192.168.1.108:8080/post/createPost/";
-    var newurl = "http://192.168.1.108:8080/post/createPostFile/";
+
     var newsubjecturl = "http://192.168.1.108:8080/post/createNewSubject/"
 
-    fetch(url, {
-        method: 'POST',
-        header: {
-          'Content-Type' : 'multipart/form-data',
-        },
-        body: formData,
-
-      }).then(response => response.json() )
-        .then((response) => {
-            console.log(response);
-      }).catch(error =>  alert(error));
-
-      /*fetch(newurl, {
+    if(type === "newsubject"){
+      console.log("new subject");
+      fetch(newsubjecturl, {
           method: 'POST',
+          header: {
+            'Content-Type' : 'multipart/form-data',
+          },
           body: formData,
 
         }).then(response => response.json() )
           .then((response) => {
-              console.log(response);
-        }).catch(error =>  alert(error));*/
+              if(response.error){
+                alert("Hata : " + response.error)
+              }else {
+                console.log(response);
+                this.subjectkontrol = true;
+                this.setState({
+                  subjectid: response.result.insertId,
+                })
 
-
-
-    /*
-    if(type === "text"){
+              }
+        }).catch(error =>  alert(error));
+    }else {
       fetch(url, {
           method: 'POST',
-          body: JSON.stringify(formData),
-          headers:{
-            'Accept':"application/json",
-            'Content-Type': 'multipart/form-data',
+          header: {
+            'Content-Type' : 'multipart/form-data',
           },
+          body: formData,
+
+        }).then(response => response.json() )
+          .then((response) => {
+              this.setState({
+                circle: !this.state.circle,
+              })
+        }).catch(error =>  alert(error));
+    }
+  }
+
+  imagefetch=()=>{
+    var newurl = "http://192.168.1.108:8080/post/createPostFile/";
+    var data = this.state.data;
+    this.imagefetchkontrol = false;
+    for (var i = 0; i < this.imagedata.length; i++) {
+      var form = new FormData();
+      form.append("file", data[this.imagedata[i]].file);
+      form.append("type", "file");
+      form.append("id", this.state.subjectid);
+      form.append("elementid", data[this.imagedata[i]].id);
+      form.append("filename", data[this.imagedata[i]].filename);
+
+      fetch(newurl, {
+          method: 'POST',
+          body: form,
+
         }).then(response => response.json() )
           .then((response) => {
               console.log(response);
-        }).catch(error =>  alert("Hata"));
+        }).catch(error =>  alert(error));
     }
-    */
+  }
 
+
+  removefetch = () => {
+
+    console.log("remove fetch");
+    console.log(this.removeids);
+
+    var url = "http://192.168.1.108:8080/post/removedata/";
+    var form = new FormData();
+    form.append("remove", JSON.stringify(this.removeids));
+    form.append("id",JSON.stringify(this.state.subjectid));
+
+    fetch(url, {
+      method: 'POST',
+      header: {
+        'Content-Type' : 'multipart/form-data',
+      },
+      body: form,
+
+    }).then(response => response.json() )
+      .then((response) => {
+        if(response.error){
+          console.log("HATA");
+        }else {
+          this.removeids=[];
+        }
+    }).catch(error =>  alert(error));
 
   }
 
 
   render(){
 
-    console.log(this.subjectkontrol);
-    console.log(this.state.data.length);
-
     if(this.subjectkontrol === true && this.state.data.length > 0){
       console.log("come on");
       this.subjectkontrol = false;
       this.elements();
+    }
+
+    if(this.imagefetchkontrol === true && this.imagedata.length > 0){
+      console.log("imagefetch");
+      this.subjectkontrol = false;
+      this.imagefetch();
     }
 
     return (

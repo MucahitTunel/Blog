@@ -1,0 +1,11 @@
+.login-border {
+  margin: 100px auto;
+  text-align: center;
+  background: lightblue;
+  border-radius: 20px;
+  box-shadow: 5px 5px 10px #7ae3cc;
+}
+
+input {
+  margin: 0px auto;
+}

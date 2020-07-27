@@ -1,9 +1,8 @@
 .Header {
   height: 50px;
-  background: #f3efee;
+  background: #7574b2;
   border-color: black;
   position: fixed;
-  z-index: 100;
   width: 100%;
   top: 0px;
   left: 0px;
@@ -11,7 +10,7 @@
 
 
 li#li:hover {
-  background-color: orange;
+  background-color: #b1b0f4;
   cursor: pointer;
   font-weight: bold;
 }
@@ -31,9 +30,65 @@ ul a {
 ul#ul {
   list-style: none;
   margin: 0px;
+  margin-left: 20px;
   padding: 0px;
 }
 
 #HeaderText {
   font-size: 20px;
+}
+
+
+/*
+for mobile or tablet
+*/
+
+i {
+  position: absolute;
+  right: 0px;
+}
+
+i:hover {
+  cursor: pointer;
+}
+
+
+.myLinks {
+
+  position: absolute;
+  right: 10px;
+  top: 50px;
+  width: 100%;
+  display: none;
+}
+
+
+.mobileHeader {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  background: #7574b2;
+  width: 100%;
+  height: 50px;;
+  z-index: 2;
+}
+
+.change-bar {
+  position: absolute;
+  top: 50px;
+  width: 100%;
+  display: block;
+  background: lightblue;
+}
+
+.change-bar #dropdown {
+  width: 100%;
+  height: 50px;
+  padding: 10px;
+  float: left;
+
+}
+
+.change-bar #dropdown:hover {
+  background: red;
 }

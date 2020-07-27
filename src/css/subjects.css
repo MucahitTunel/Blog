@@ -1,8 +1,14 @@
+.body {
+  position: absolute;
+  width: 100%;
+}
+
 .Title {
+  margin-top: 70px;
   text-align: left;
   margin-left: 10%;
-  margin-top: 60px;
   position: relative;
+  width: 100%;
 }
 
 

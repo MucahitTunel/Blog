@@ -5,3 +5,18 @@ export const change = (data) => {
     payload: data,
   };
 };
+
+export const width = (data) => {
+
+  return {
+    type: "WIDTH",
+    payload: data,
+  }
+}
+
+export const mobileHeaderActive = (data) => {
+  return {
+    type: "ISACTIVE",
+    payload: data,
+  }
+}

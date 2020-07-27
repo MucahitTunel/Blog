@@ -45,14 +45,6 @@ textarea.multitext {
   box-sizing:border-box;
 }
 
-.Header {
-  position: fixed;
-  top: 0px;
-  left: 0px;
-  width: 100%;
-  background: red;
-  height: 60;
-}
 
 input#titleinput {
   font-size: 60px;
