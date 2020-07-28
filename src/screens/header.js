@@ -3,7 +3,7 @@ import './../css/header.css';
 import {Link} from "react-router-dom";
 import {connect} from 'react-redux';
 import {width, mobileHeaderActive} from "./../actions";
- import { Col } from 'react-bootstrap';
+import { Col } from 'react-bootstrap';
 
 
 class Header extends React.Component{

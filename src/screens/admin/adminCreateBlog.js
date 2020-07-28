@@ -5,6 +5,12 @@ import Textarea from "../../utils/textarea";
 import Input from "../../utils/input";
 import Image from "../../utils/image";
 
+import AdminHeader from './adminHeader';
+
+import Header from '../header';
+
+import {connect, dispatch} from 'react-redux';
+
 import Icon, { FontAwesome, Feather } from 'react-web-vector-icons';
 
 
@@ -489,7 +495,10 @@ remove = () => {
     }
 
     return (
-      <div className="App">
+      <div className="App" style={{width:this.props.width}}>
+
+        <AdminHeader />
+
         <div className="createBorder">
           <div style={{padding:10}}>
             <input onFocus={this._onFocus} id="titleinput" name="title" value={this.state.title} onChange={this.handleTitleChange} placeholder="Başlık" />
@@ -541,10 +550,10 @@ remove = () => {
             </form>
 
             <div className="secenekler">
-              <ul id="ul">
+              <ul id="uladmin">
               {this.state.livalue.map((v,k) => {
                 return(
-                  <li id="li" value={v} key={k} onClick={(e)=>this.click(e,v)}>{v}</li>
+                  <li id="liadmin" value={v} key={k} onClick={(e)=>this.click(e,v)}>{v}</li>
                 );
               })}
 
@@ -660,4 +669,12 @@ remove = () => {
 
 }
 
-export default CreateBlog;
+const mapStateToProps = state => ({ width: state.width, mobileHeaderActive:state.mobileHeader })
+
+const mapDispatchToProps = () => {
+  return {
+
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(CreateBlog)

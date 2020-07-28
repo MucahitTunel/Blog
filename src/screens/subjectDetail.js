@@ -1,6 +1,7 @@
 import React from 'react';
 import './../css/subjectDetail.css';
 import Header from './header';
+import {connect, dispatch} from 'react-redux';
 
 class SubjectDetail extends React.Component {
   constructor(props) {
@@ -41,6 +42,16 @@ class SubjectDetail extends React.Component {
 
   render(){
     console.log(this.state.data.length);
+    if(this.props.mobileHeaderActive === true){
+       var style = {
+        marginTop: 150,
+      }
+
+    }else {
+      var style = {
+     }
+    }
+
     return(
       <div className="Container">
 
@@ -50,7 +61,7 @@ class SubjectDetail extends React.Component {
 
         {this.state.data.length > 0 ?
 
-          <div className="body">
+          <div className="body" style={style}>
             <article className="article" style={{padding:10}}>
 
             <div className="title">
@@ -76,7 +87,6 @@ class SubjectDetail extends React.Component {
                 );
               }else {
                 var url = "http://192.168.1.108:8080/images/" + v.data;
-                console.log(url);
                 return(
                   <div key={k}>
                     <img src={url} width="300" height="300" />
@@ -98,5 +108,12 @@ class SubjectDetail extends React.Component {
   }
 }
 
+const mapStateToProps = state => ({ width: state.width, mobileHeaderActive:state.mobileHeader })
 
-export default SubjectDetail;
+const mapDispatchToProps = () => {
+  return {
+
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SubjectDetail)

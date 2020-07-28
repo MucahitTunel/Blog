@@ -1,5 +1,6 @@
 import React from 'react';
 import '../../css/admin/adminHome.css';
+import AdminHeader from './adminHeader';
 
 
 class AdminHome extends React.Component{
@@ -15,24 +16,7 @@ class AdminHome extends React.Component{
   render(){
     return (
         <div>
-          <div className="Headeradmin">
-            <ul className="header_ul">
-              <li className="header_li"><a href="/">Gönderiler</a>
-                <ul className="header_under_ul">
-                  <li className="header_under_li"><a href="/adminCreateBlog">Post Oluştur</a></li>
-                  <li className="header_under_li"><a href="/">Post Düzenle</a></li>
-                  <li className="header_under_li"><a href="/">Post Sil</a></li>
-                </ul>
-              </li>
-              <li className="header_li"><a href="#">Ayarlar</a>
-                <ul className="header_under_ul">
-                  <li className="header_under_li"><a href="/">Hakkımda</a></li>
-                  <li className="header_under_li"><a href="/">Ana Sayfa</a></li>
-                  <li className="header_under_li"><a href="/">İletişim</a></li>
-                </ul>
-              </li>
-            </ul>
-          </div>
+          <AdminHeader />
         </div>
     );
   }
