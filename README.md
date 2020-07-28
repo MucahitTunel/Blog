@@ -1,6 +1,7 @@
 # Blog Sitesi
 
-Örnek olarak hazırlanmakta olan bir blog sitesi
+Örnek olarak hazırlanmakta olan bir blog sitesi.
+Her türlü cihaza uygun responsive tasarım yapılmaktadır.
 
 ## Kullanılan Teknolojiler
 
