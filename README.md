@@ -1,6 +1,7 @@
 # Blog Sitesi
 
-Örnek olarak hazırlanmakta olan bir blog sitesi
+Örnek olarak hazırlanmakta olan bir blog sitesi.
+Her türlü cihaza uygun responsive tasarım yapılmaktadır.
 
 ## Kullanılan Teknolojiler
 
@@ -10,6 +11,7 @@
 
 ## Son Görüntüler
 
-![Photo](images/Screenshot from 2020-07-28 10-05-31.png)
-![Photo](images/Screenshot from 2020-07-28 10-06-51.png)
-![Photo](images/Screenshot from 2020-07-28 10-06-56.png)
+![Photo](images/home.png)
+![Photo](images/createPost.png)
+![Photo](images/createPost2.png)
+![Photo](images/createPost3.png)
