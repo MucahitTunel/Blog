@@ -11,7 +11,10 @@ Her türlü cihaza uygun responsive tasarım yapılmaktadır.
 
 ## Son Görüntüler
 
-![Photo](images/home.png)
-![Photo](images/createPost.png)
-![Photo](images/createPost2.png)
-![Photo](images/createPost3.png)
+![Photo](images/Home.png)
+![Photo](images/Home2.png)
+![Photo](images/Detail.png)
+![Photo](images/Detail2.png)
+![Photo](images/create.png)
+![Photo](images/create2.png)
+![Photo](images/create3.png)
