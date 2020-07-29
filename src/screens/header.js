@@ -1,5 +1,5 @@
 import React from 'react';
-import './../css/header.css';
+import './../css/sass/header.scss';
 import {Link} from "react-router-dom";
 import {connect} from 'react-redux';
 import {width, mobileHeaderActive} from "./../actions";
@@ -12,7 +12,7 @@ class Header extends React.Component{
 
     this.state = {
       activeTab: 0,
-      li:["Anasayfa","Hakkımda","İletişim"],
+      li:["Anasayfa","Hakkımda","Projelerim"],
       width: window.innerWidth,
       height: window.innerHeight,
       active: false,
@@ -54,7 +54,7 @@ class Header extends React.Component{
   }
 
   render(){
-    if(this.state.width > 740){
+    if(this.state.width > 768){
       return (
           <div className="Header" style={{width:this.state.width}}>
                 <ul id="ul">

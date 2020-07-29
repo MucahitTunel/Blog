@@ -1,5 +1,5 @@
 import React from 'react';
-import './../../css/admin/admincreateblog.css';
+import './../../css/admin/admincreateblog.scss';
 import Color from "../../utils/colors";
 import Textarea from "../../utils/textarea";
 import Input from "../../utils/input";

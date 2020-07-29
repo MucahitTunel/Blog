@@ -5,9 +5,10 @@ import Subjects from './screens/subjects';
 import SubjectDetail from './screens/subjectDetail';
 import AdminCreateBlog from './screens/admin/adminCreateBlog';
 import AboutUs from './screens/AboutUs';
-import Contact from './screens/Contact';
 import AdminHome from './screens/admin/adminHome';
 import AdminLogin from './screens/admin/adminLogin';
+import AdminCreateAboutUs from './screens/admin/createAboutUs';
+
 
 import {connect} from 'react-redux';
 import {change} from "./actions";
@@ -68,9 +69,10 @@ class App extends React.Component{
                 <Route path={"/subjects/subjectDetail/:id/:title"} component={SubjectDetail} />
                 <Route path={"/adminCreateBlog"} component={AdminCreateBlog} />
                 <Route path={"/Hakkımda"} component={AboutUs} />
-                <Route path={"/İletişim"} component={Contact} />
                 <Route path={"/adminHome"} component={AdminHome} />
                 <Route path={"/adminLogin"} component={AdminLogin} />
+                <Route path={"/adminCreateAboutUs"} component={AdminCreateAboutUs} />
+
               </Switch>
             </div>
 

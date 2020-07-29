@@ -2,6 +2,7 @@ import React from 'react';
 import './../css/subjectDetail.css';
 import Header from './header';
 import {connect, dispatch} from 'react-redux';
+import Myinfo from './myinfo'
 
 class SubjectDetail extends React.Component {
   constructor(props) {
@@ -44,67 +45,138 @@ class SubjectDetail extends React.Component {
     console.log(this.state.data.length);
     if(this.props.mobileHeaderActive === true){
        var style = {
-        marginTop: 150,
+        marginTop: 200,
+        flex:7,
       }
 
     }else {
       var style = {
+        flex:7,
      }
     }
 
-    return(
-      <div className="Container">
-
-        <Header />
 
 
+    if(this.props.width > 768){
+      return(
+        <div className="Container">
 
-        {this.state.data.length > 0 ?
+          <Header />
 
-          <div className="body" style={style}>
-            <article className="article" style={{padding:10}}>
+          <div style={{display:'flex'}}>
+            <div style={style}>
+            {this.state.data.length > 0 ?
 
-            <div className="title">
-              <h2>{this.state.title.toUpperCase()}</h2>
+              <div className="body">
+                <article className="article" style={{padding:10}}>
+
+                <div className="title">
+                  <h2>{this.state.title.toUpperCase()}</h2>
+                </div>
+                <div style={{margin:5}}>
+                {this.state.data.map((v,k) => {
+                  if(v.el_type === "yazi"){
+                    var props = v.props.split(".");
+                    var color = props[0];
+                    var size = parseInt(props[1]);
+
+                    return(
+                      <div key={k}>
+                        <p style={{fontSize:size, color:color}}> {v.data} </p>
+                      </div>
+                    );
+                  }else if (v.el_type === "alt baslik") {
+                    return(
+                      <div key={k}>
+                        <h2> {v.data} </h2>
+                      </div>
+                    );
+                  }else {
+                    var url = "http://192.168.1.108:8080/images/" + v.data;
+                    return(
+                      <div key={k}>
+                        <img src={url} width="300" height="300" />
+                      </div>
+                    );
+                  }
+                })}
+                </div>
+                </article>
+              </div>
+
+              :
+
+              null
+            }
             </div>
-            <div style={{margin:5}}>
-            {this.state.data.map((v,k) => {
-              if(v.el_type === "yazi"){
-                var props = v.props.split(".");
-                var color = props[0];
-                var size = parseInt(props[1]);
 
-                return(
-                  <div key={k}>
-                    <p style={{fontSize:size, color:color}}> {v.data} </p>
-                  </div>
-                );
-              }else if (v.el_type === "alt baslik") {
-                return(
-                  <div key={k}>
-                    <h2> {v.data} </h2>
-                  </div>
-                );
-              }else {
-                var url = "http://192.168.1.108:8080/images/" + v.data;
-                return(
-                  <div key={k}>
-                    <img src={url} width="300" height="300" />
-                  </div>
-                );
-              }
-            })}
+            <div style={{flex:2, marginTop:70, marginRight:10}}>
+              <div style={{width:'80%', padding:10}}>
+                <Myinfo />
+              </div>
             </div>
-            </article>
           </div>
+        </div>
+      )
+    }else {
+      return(
+          <div>
+              <Header />
 
-          :
+              <div style={style}>
+              {this.state.data.length > 0 ?
 
-          null
-        }
+                <div className="body">
+                  <article className="article" style={{padding:10}}>
 
-      </div>
-    )
+                  <div className="title">
+                    <h2>{this.state.title.toUpperCase()}</h2>
+                  </div>
+                  <div style={{margin:5}}>
+                  {this.state.data.map((v,k) => {
+                    if(v.el_type === "yazi"){
+                      var props = v.props.split(".");
+                      var color = props[0];
+                      var size = parseInt(props[1]);
+
+                      return(
+                        <div key={k}>
+                          <p style={{fontSize:size, color:color}}> {v.data} </p>
+                        </div>
+                      );
+                    }else if (v.el_type === "alt baslik") {
+                      return(
+                        <div key={k}>
+                          <h2> {v.data} </h2>
+                        </div>
+                      );
+                    }else {
+                      var url = "http://192.168.1.108:8080/images/" + v.data;
+                      return(
+                        <div key={k}>
+                          <img src={url} width="300" height="300" />
+                        </div>
+                      );
+                    }
+                  })}
+                  </div>
+                  </article>
+                </div>
+
+                :
+
+                null
+              }
+              </div>
+
+              <div style={{marginLeft:'10%',width:150, marginTop:50}}>
+                <Myinfo />
+              </div>
+          </div>
+      );
+    }
+
+
   }
 }
 

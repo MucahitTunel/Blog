@@ -1,10 +1,14 @@
+$background: lightblue;
+
+
 .Headeradmin {
   position: fixed;
   top: 0px;
   left: 0px;
   width: 100%;
   height: 50px;
-  background: lightblue;
+  background: $background;
+  z-index: 100;
 }
 
 .header_ul {
@@ -14,37 +18,43 @@
   padding: 0px;
 }
 
+
+
+//li
 .header_li {
   position: relative;;
   float: left;
   width: 150px;
   padding: 16px;
   text-align: center;
+
+  &:hover {
+    background: red;
+    width: 150px;
+    padding: 16px;
+    text-align: center;
+
+  .header_under_ul {
+        display: block;
+    }
+  }
 }
 
-.header_li:hover  {
-  background: red;
-  width: 150px;
-  padding: 16px;
-  text-align: center;
-}
 
-.header_li:hover .header_under_ul {
-  display: block;
-}
-
+// li altındaki seçenekler
 .header_under_li {
   width: 150px;
   padding: 16px;
   margin: 0px;
   text-align: center;
-  background: lightblue;
+  background: $background;
+
+  &:hover {
+    cursor: pointer;
+    background: red;
+  }
 }
 
-.header_under_li:hover {
-  cursor: pointer;
-  background: red;
-}
 
 .header_under_ul {
   display: none;
@@ -55,3 +65,8 @@
   margin: 0px;
   padding: 0px;
 }
+
+
+/*
+  MObile Header
+*/

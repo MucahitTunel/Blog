@@ -3,6 +3,7 @@ import './../css/subjects.css';
 
 import {Link} from "react-router-dom";
 import Header from './header';
+import Myinfo from './myinfo';
 
 import {connect, dispatch} from 'react-redux';
 
@@ -68,43 +69,96 @@ class Subjects extends React.Component{
   render(){
       if(this.props.mobileHeaderActive === true){
          var style = {
-          width: this.props.width,
-          marginTop: 150,
+          marginTop: 200,
+          width:'90%',
+          flex:7,
         }
 
       }else {
         var style = {
-         width: this.props.width,
+          marginTop:70,
+          width:'90%',
+          flex:7,
        }
       }
 
 
-      return (
-        <div className="body" style={{width:this.props.width}}>
+      if(this.props.width > 768){
+        return (
+          <div className="body">
 
-            <Header />
+              <Header />
+              <div style={{display:'flex'}}>
+                <div style={style}>
+                  <div className="Title">
+                    <h1>KONULAR</h1>
+                  </div>
 
-            <div className="Title" style={style}>
-              <h1>KONULAR</h1>
+                  <div style={{marginLeft:'10%'}}>
+                    <ul>
+                      {this.state.data.map((v,k) => {
+                        return(
+                          <div  key={k}>
+                            <li>
+                              <Link style={{color:'#000'}} to={`/subjects/subjectDetail/${v.id}/${v.title}`}>
+                              <div id="subjects" style={{padding:10, fontSize:20}}>
+                                {v.title}
+                              </div>
+                              </Link>
+                            </li>
+                          </div>
+                        );
+                      })}
+                    </ul>
+                  </div>
+
+                </div>
+
+                <div style={{flex:2, marginTop:70, marginRight:10}}>
+                  <div style={{width:'80%', padding:10}}>
+                    <Myinfo />
+                  </div>
+                </div>
+              </div>
+          </div>
+        );
+      }else {
+        return(
+
+            <div>
+                <Header />
+
+                <div style={style}>
+                  <div className="Title">
+                    <h1>KONULAR</h1>
+                  </div>
+
+                  <div style={{marginLeft:'10%'}}>
+                  <ul>
+                    {this.state.data.map((v,k) => {
+                      return(
+                        <div  key={k}>
+                          <li>
+                            <Link style={{color:'#000'}} to={`/subjects/subjectDetail/${v.id}/${v.title}`}>
+                            <div id="subjects" style={{padding:10, fontSize:20}}>
+                              {v.title}
+                            </div>
+                            </Link>
+                          </li>
+                        </div>
+                      );
+                    })}
+                  </ul>
+
+                  </div>
+                </div>
+
+                <div style={{marginLeft:'10%',width:150, marginTop:50}}>
+                  <Myinfo />
+                </div>
             </div>
-
-            <div style={{width:this.props.width}}>
-                {this.state.data.map((v,k) => {
-                  return(
-                    <div className="subjectborder" key={k}>
-                      <Link style={{textDecoration:'none', color:'#000'}} to={`/subjects/subjectDetail/${v.id}/${v.title}`}>
-                      <div id="subjects" style={{padding:10, fontSize:20}}>
-                        {v.title}
-                      </div>
-                      </Link>
-
-                    </div>
-                  );
-                })}
-
-            </div>
-        </div>
-      );
+        );
+      }
 
   }
 

@@ -1,0 +1,31 @@
+%title {
+  text-align: left;
+  margin-left: 10%;
+  position: relative;
+  z-index: 0;
+}
+
+.Title {
+  @extend %title;
+}
+
+.container {
+    height: 100%;
+}
+
+.about {
+  margin-left: 10%;
+  margin-top: 20px;
+}
+
+.info {
+  @extend %title;
+  border: 1px solid #7ae3cc;
+  border-radius: 10px;
+  border-width: thin;
+  padding: 10px;
+  width: 80%;
+  height: 50px;
+  background-color: #5cb09e;
+  font-style: italic;
+}
