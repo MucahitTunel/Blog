@@ -20,3 +20,13 @@ export const mobileHeaderActive = (data) => {
     payload: data,
   }
 }
+
+
+export const login = () => {
+
+  console.log("loginnnnnnn");
+
+  return {
+    type: "SIGN IN",
+  }
+}

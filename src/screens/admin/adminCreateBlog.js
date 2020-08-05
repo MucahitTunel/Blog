@@ -13,6 +13,7 @@ import {connect, dispatch} from 'react-redux';
 
 import Icon, { FontAwesome, Feather } from 'react-web-vector-icons';
 
+import {login} from "./../../actions";
 
 
 
@@ -20,6 +21,19 @@ class CreateBlog extends React.Component{
 
   constructor(props){
     super(props);
+
+    var deger = localStorage.getItem("isLogin");
+
+    if(deger==="true" && this.props.loginvalue===false){
+      console.log("if şartı");
+      this.props.login();
+    }
+
+    if(deger!=="true"){
+      console.log("login şartı");
+      this.props.history.push("/adminLogin");
+    }
+
 
     this.key = 1;
     this.dizino=0;
@@ -669,12 +683,12 @@ remove = () => {
 
 }
 
-const mapStateToProps = state => ({ width: state.width, mobileHeaderActive:state.mobileHeader })
+const mapStateToProps = state => ({ width: state.width, mobileHeaderActive:state.mobileHeader, loginvalue: state.login })
 
 const mapDispatchToProps = () => {
   return {
-
+    login,
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(CreateBlog)
+export default connect(mapStateToProps, mapDispatchToProps())(CreateBlog)

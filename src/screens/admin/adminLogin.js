@@ -1,5 +1,8 @@
 import React from 'react';
 import '../../css/admin/adminLogin.css';
+import {login} from "./../../actions";
+
+import {connect} from 'react-redux';
 
 
 class AdminLogin extends React.Component{
@@ -7,6 +10,7 @@ class AdminLogin extends React.Component{
   constructor(props){
     super(props);
 
+    console.log("adminlogin");
 
 
     this.state = {
@@ -101,7 +105,10 @@ class AdminLogin extends React.Component{
           }else {
             if(response.result.length > 0){
                 console.log("Başarılı");
-                this.props.history.push("/")
+                this.props.login();
+                localStorage.setItem("isLogin", "true");
+                this.props.history.push("/adminHome")
+
             }else {
               console.log("Kullanıcı adı veya şifre hatalı");
             }
@@ -127,7 +134,7 @@ class AdminLogin extends React.Component{
               <label>Password</label>
               <input type="password" class="col-10 col-sm-10 form-control" id="pwd" value={this.state.password} onChange={this.handleChangePassword} />
             </div>
-            <button type="submit" class="btn btn-primary col-10 col-sm-10" onClick={this.login}>Submit</button>
+            <button class="btn btn-primary col-10 col-sm-10" onClick={this.login}>Submit</button>
           </form>
         </div>
       </div>
@@ -135,4 +142,13 @@ class AdminLogin extends React.Component{
   }
 }
 
-export default AdminLogin;
+
+const mapStateToProps = state => ({width: state.width,   mobileHeaderActive:state.mobileHeader })
+
+const mapDispatchToProps = () => {
+  return {
+    login,
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps())(AdminLogin)

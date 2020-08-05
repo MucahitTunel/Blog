@@ -9,6 +9,7 @@ $background: lightblue;
   height: 50px;
   background: $background;
   z-index: 100;
+  display: flex;
 }
 
 .header_ul {
@@ -49,6 +50,7 @@ $background: lightblue;
   text-align: center;
   background: $background;
 
+
   &:hover {
     cursor: pointer;
     background: red;
@@ -64,7 +66,9 @@ $background: lightblue;
   list-style: none;
   margin: 0px;
   padding: 0px;
+  z-index: 100;
 }
+
 
 
 /*

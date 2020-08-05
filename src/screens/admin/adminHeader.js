@@ -1,8 +1,9 @@
 import React from 'react';
 import '../../css/admin/adminHeader.scss';
 
-import {width, mobileHeaderActive} from "../../actions";
+import {width, mobileHeaderActive, login} from "../../actions";
 import {connect} from 'react-redux';
+import { Route } from 'react-router-dom'
 
 
 class AdminHeader extends React.Component{
@@ -16,6 +17,8 @@ class AdminHeader extends React.Component{
       width: window.innerWidth,
       height: window.innerHeight,
     }
+
+    this.changepage = this.changepage.bind(this);
 
   }
 
@@ -31,34 +34,78 @@ class AdminHeader extends React.Component{
     window.removeEventListener('resize', this.updateDimensions);
   }
 
+  changepage = (e) => {
+    e.preventDefault();
+  }
+
+
+
+
 
   render(){
     return (
-        <div>
+        <div style={{position:'fixed', zIndex:100}}>
           <div className="Headeradmin">
-            <ul className="header_ul">
-              <li className="header_li"><a href="/">Gönderiler</a>
-                <ul className="header_under_ul">
-                  <li className="header_under_li"><a href="/adminCreateBlog">Post Oluştur</a></li>
-                  <li className="header_under_li"><a href="/">Post Düzenle</a></li>
-                  <li className="header_under_li"><a href="/">Post Sil</a></li>
-                </ul>
-              </li>
-              <li className="header_li"><a href="#">Ayarlar</a>
-                <ul className="header_under_ul">
-                  <li className="header_under_li"><a href="/adminCreateAboutUs">Hakkımda</a></li>
-                  <li className="header_under_li"><a href="/">Ana Sayfa</a></li>
-                  <li className="header_under_li"><a href="/">İletişim</a></li>
-                </ul>
-              </li>
-            </ul>
+            <div style={{flex:5}}>
+              <ul className="header_ul">
+                <li className="header_li">Gönderiler
+                  <ul className="header_under_ul">
+
+                    <Route render={({ history}) => (
+                      <div>
+                      <li className="header_under_li" onClick={()=>history.push("/adminCreateBlog")}>Post Oluştur</li>
+                      <li className="header_under_li">Post Düzenle</li>
+                      <li className="header_under_li" onClick={()=>history.push("/deletePost")}>Post Sil</li>
+                      </div>
+                    )} />
+
+                  </ul>
+                </li>
+                <li className="header_li">Ayarlar
+                  <ul className="header_under_ul">
+
+                  <Route render={({ history}) => (
+                    <div>
+                      <li className="header_under_li">Hakkımda</li>
+                      <li className="header_under_li">Ana Sayfa</li>
+                      <li className="header_under_li">Projelerim</li>
+                    </div>
+                  )} />
+
+                  </ul>
+                </li>
+                <li className="header_li">Projelerim
+                  <ul className="header_under_ul">
+
+                  <Route render={({ history}) => (
+                    <div>
+                      <li className="header_under_li" onClick={() => history.push("adminCreateProject")}>Proje Oluştur</li>
+                      <li className="header_under_li"  onClick={() => history.push("deleteProject")}>Proje Sil</li>
+                      <li className="header_under_li">Proje Düzenle</li>
+                    </div>
+                  )} />
+
+                  </ul>
+                </li>
+              </ul>
+            </div>
+
+            <div className="logout" style={{flex:1}}>
+
+                <a href="/adminLogin" onClick={()=>localStorage.clear()}><i className="fa fa-sign-out fa-2x" style={{padding:10}} aria-hidden="true"></i></a>
+
+
+            </div>
+
+
+
           </div>
         </div>
     );
   }
 }
 
-const mapStateToProps = state => ({ width: state.width })
+const mapStateToProps = state => ({ width: state.width, login: state.login })
 
 const mapDispatchToProps = () => {
   return {

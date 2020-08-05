@@ -8,6 +8,12 @@ import AboutUs from './screens/AboutUs';
 import AdminHome from './screens/admin/adminHome';
 import AdminLogin from './screens/admin/adminLogin';
 import AdminCreateAboutUs from './screens/admin/createAboutUs';
+import DeletePost from './screens/admin/deletePost';
+import PostDetail from './screens/admin/postDetail';
+import AdminCreateProject from './screens/admin/adminCreateProjects';
+import Projects from './screens/projects';
+import ProjectDetail from './screens/projectDetail';
+import DeleteProject from './screens/admin/deleteProject';
 
 
 import {connect} from 'react-redux';
@@ -33,8 +39,11 @@ class App extends React.Component{
   }
 
   componentDidMount(){
-    console.log(this.props.path);
+
+
   }
+
+
 
 
   handleSubmit = (event) => {
@@ -46,6 +55,8 @@ class App extends React.Component{
   handleChange = (event) => {
 
   }
+
+
 
 
   render(){
@@ -72,6 +83,12 @@ class App extends React.Component{
                 <Route path={"/adminHome"} component={AdminHome} />
                 <Route path={"/adminLogin"} component={AdminLogin} />
                 <Route path={"/adminCreateAboutUs"} component={AdminCreateAboutUs} />
+                <Route path={"/deletepost"} component={DeletePost} />
+                <Route path={"/postdetail/:id/:title"} component={PostDetail} />
+                <Route path={"/adminCreateProject"} component={AdminCreateProject} />
+                <Route path={"/projects"} exact component={Projects} />
+                <Route path={"/projects/projectDetail/:id/:title"} component={ProjectDetail} />
+                <Route path={"/deleteproject"} component={DeleteProject} />
 
               </Switch>
             </div>
