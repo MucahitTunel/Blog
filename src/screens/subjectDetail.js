@@ -169,7 +169,7 @@ class SubjectDetail extends React.Component {
               }
               </div>
 
-              <div style={{marginLeft:'10%',width:150, marginTop:50}}>
+              <div style={{marginLeft:'10%', marginTop:50}}>
                 <Myinfo />
               </div>
           </div>

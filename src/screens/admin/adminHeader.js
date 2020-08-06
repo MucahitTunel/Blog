@@ -79,9 +79,9 @@ class AdminHeader extends React.Component{
 
                   <Route render={({ history}) => (
                     <div>
-                      <li className="header_under_li" onClick={() => history.push("adminCreateProject")}>Proje Oluştur</li>
-                      <li className="header_under_li"  onClick={() => history.push("deleteProject")}>Proje Sil</li>
-                      <li className="header_under_li">Proje Düzenle</li>
+                      <li className="header_under_li" onClick={() => history.push("/adminCreateProject")}>Proje Oluştur</li>
+                      <li className="header_under_li"  onClick={() => history.push("/deleteProject")}>Projelerim</li>
+
                     </div>
                   )} />
 

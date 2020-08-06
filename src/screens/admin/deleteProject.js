@@ -101,7 +101,7 @@ class DeleteProject extends React.Component{
 
                   <div style={{flex:2, position:'relative', marginTop:3, display:'flex'}}>
                     <div style={{flex:1,position:'relative'}}>
-                      <i className="removeicon fa fa-pencil-square-o" aria-hidden="true" style={{position:'absolute'}}>Düzenle</i>
+                      <i className="removeicon fa fa-pencil-square-o" aria-hidden="true" style={{position:'absolute'}} onClick={()=>this.props.history.push(`editproject/${v.id}/${v.title}`)}>Düzenle</i>
                     </div>
                     <div style={{flex:1,position:'relative'}}>
                       <i className="removeicon fa fa-trash" aria-hidden="true" style={{position:'absolute'}} onClick={(e) => this.remove(e,k)}>Sil</i>

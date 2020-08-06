@@ -64,35 +64,56 @@ class AboutUs extends React.Component{
      }
     }
 
-    return (
-        <div className="Body" style={{width: this.props.width}}>
-          <Header />
+    if(this.props.width > 768){
+      return (
+          <div className="Body" style={{width: this.props.width}}>
+            <Header />
 
-          <div style={{display:'flex'}}>
-            <div style={style}>
+            <div style={{display:'flex'}}>
+              <div style={style}>
 
-            <div className="Title">
-              <h1>Hakkımda</h1>
-            </div>
+              <div className="Title">
+                <h1>Hakkımda</h1>
+              </div>
 
-            <div style={{marginLeft:'10%', width:'80%'}}>
-              <p>{this.state.about}</p>
-            </div>
+              <div style={{marginLeft:'10%', width:'80%'}}>
+                <p>{this.state.about}</p>
+              </div>
 
-            </div>
+              </div>
 
-            <div style={{flex:2, marginTop:70, marginRight:10}}>
-              <div style={{width:'80%', padding:10}}>
-                <Myinfo />
+              <div style={{flex:2, marginTop:70, marginRight:10}}>
+                <div style={{width:'80%', padding:10}}>
+                  <Myinfo />
+                </div>
               </div>
             </div>
           </div>
+      );
+    }else {
+      return(
+        <div>
+            <Header />
 
+            <div style={style}>
+              <div className="Title">
+                <h1>Hakkımda</h1>
+              </div>
 
+              <div style={{marginLeft:'10%'}}>
+                <p>{this.state.about}</p>
+              </div>
+            </div>
 
-
+            <div style={{marginLeft:'10%', marginTop:50}}>
+              <Myinfo />
+            </div>
         </div>
-    );
+      );
+
+    }
+
+
   }
 }
 

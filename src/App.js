@@ -14,6 +14,7 @@ import AdminCreateProject from './screens/admin/adminCreateProjects';
 import Projects from './screens/projects';
 import ProjectDetail from './screens/projectDetail';
 import DeleteProject from './screens/admin/deleteProject';
+import EditProject from './screens/admin/editproject';
 
 
 import {connect} from 'react-redux';
@@ -89,6 +90,7 @@ class App extends React.Component{
                 <Route path={"/projects"} exact component={Projects} />
                 <Route path={"/projects/projectDetail/:id/:title"} component={ProjectDetail} />
                 <Route path={"/deleteproject"} component={DeleteProject} />
+                <Route path={"/editproject/:id/:title"} component={EditProject} />
 
               </Switch>
             </div>

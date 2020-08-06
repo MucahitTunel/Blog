@@ -8,7 +8,7 @@ import {login} from "./../../actions";
 import FlashMessage from 'react-flash-message';
 
 
-class AdminCreateProjects extends React.Component{
+class EditProject extends React.Component{
 
   constructor(props){
     super(props);
@@ -31,12 +31,47 @@ class AdminCreateProjects extends React.Component{
       content: "",
       link: "",
       showMessage: false,
-      update: false,
+      id: props.match.params.id,
+      title: props.match.params.title,
     }
 
     this.handleChangeTitle = this.handleChangeTitle.bind(this);
     this.handleChangeContent = this.handleChangeContent.bind(this);
   }
+
+
+  componentDidMount(){
+    this.getproject();
+  }
+
+  getproject = () => {
+    var url = 'http://192.168.1.108:8080/projects/projectdetail/';
+    var data = {
+      title: this.state.title,
+      id: this.state.id,
+    }
+    fetch(url, {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(data),
+
+    }).then((response) => response.json())
+    .then((response) => {
+      console.log("*************************");
+      console.log(response);
+      this.setState({
+        title:response.result[0].title,
+        content:response.result[0].content,
+        link:response.result[0].link,
+      })
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+  }
+
+
+
 
 
   handleChangeTitle = (e) => {
@@ -57,15 +92,17 @@ class AdminCreateProjects extends React.Component{
     })
   }
 
+
   save = (e) => {
     e.preventDefault();
 
-    var url = "http://192.168.1.108:8080/projects/add/";
+    var url = "http://192.168.1.108:8080/projects/update/";
 
     var formData = new FormData();
     formData.append("title", JSON.stringify(this.state.title));
     formData.append("content", JSON.stringify(this.state.content));
     formData.append("link", JSON.stringify(this.state.link));
+    formData.append("id", JSON.stringify(this.state.id));
 
 
     fetch(url, {
@@ -82,43 +119,22 @@ class AdminCreateProjects extends React.Component{
         if(response.error){
           console.log("HATA");
         }else {
-          this.setState({update:true})
+          /*this.setState({
+            title:response.result[0].title,
+            content:response.result[0].content,
+            link:response.result[0].link,
+          })*/
 
         }
     }).catch(error =>  alert(error));
-
   }
-
-  invisible = () => {
-      this.setState({
-        update:false,
-      })
-  }
-
-
 
 
 
   render(){
-
-    if(this.state.update===true){
-      setTimeout(this.invisible,5000)//Timeout
-    }
-
     return (
         <div style={{position:'relative'}}>
           <AdminHeader />
-
-          {this.state.update === true ?
-
-            <div className="info">
-              Eklendi
-            </div>
-
-            :
-
-            null
-          }
 
           <div className="adminProjectBorder">
 
@@ -167,4 +183,4 @@ const mapDispatchToProps = () => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps())(AdminCreateProjects)
+export default connect(mapStateToProps, mapDispatchToProps())(EditProject)
